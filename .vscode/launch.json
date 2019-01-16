@@ -10,7 +10,7 @@
             "name": "启动程序",
             "program": "${workspaceFolder}/build/ws/Hall.js",
             "outFiles": [
-                "${workspaceFolder}/build/protos/CSProto.proto.js"
+                
             ]
         }
     ]
