@@ -69,7 +69,8 @@ var MsgBuilder;
             }
             var length = cs.encode(this.encodeBuffer.buffer, 0);
             this.setPkgLength(this.encodeBuffer.buffer, 0, length);
-            return this.encodeBuffer.slice(0, length);
+            return new Uint8Array(this.encodeBuffer, 0, length);
+            // return this.encodeBuffer.slice(0, length);
         }
         decode(buffer, uploadMessage = false) {
             buffer = buffer.buffer;

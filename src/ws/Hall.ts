@@ -21,13 +21,13 @@ module gameserver {
                 let msg = new csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_SC;
                 msg.RetCode = 0;
                 msg.RetCodeDesc = "";
-                msg.SessionId = "dgdggd";
+                msg.SessionId = "111";
                 return msg;
             }
 
-            let getWarpMsg = () => {
+            let getWarpMsg = (mapId: number = CSProto.MAP_TEMPLATE_ID_HALL) => {
                 let msg = new CSProto.CMD_WARP_SC();
-                msg.wMapID = CSProto.MAP_TEMPLATE_ID_HALL;
+                msg.wMapID = mapId;
                 msg.llServerUnixtimeMs = new Date().getTime();
                 return msg;
             };
@@ -46,6 +46,17 @@ module gameserver {
                 return msg;
             };
 
+            let getEnterCarMsg = () => {
+                let dest = new CSProto.CMD_CAR_ENTERDATA_SC();
+                dest.dwTableID = 1000;
+                dest.bIfCanJoinPlay = 1;
+                let stData = dest.stAllData;
+                stData.dwRoundID = 100;
+                stData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
+                stData.wLeftBetTime = 30;
+                return dest;
+            }
+
             wss.on('connection', function (ws) {
                 console.log(`[SERVER] connection()`);
                 ws.on('open', function () {
@@ -63,16 +74,26 @@ module gameserver {
                         let msg = getAuthMsg();
                         ws.send(builder.encode(msg));
                     } else if (msg instanceof CSProto.CMD_ALOGIN_CS) {
-                        let msg = new CSProto.CMD_ALOGIN_SC();
-                        msg.bResult = 0;
-                        ws.send(builder.encode(msg));
+                        let dest = new CSProto.CMD_ALOGIN_SC();
+                        dest.bResult = 0;
+                        ws.send(builder.encode(dest));
                         ws.send(builder.encode(getRoleMiscMsg()));
-                        ws.send(builder.encode(getWarpMsg()));
+                        if (msg.iMapTemplateID == CSProto.MAP_TEMPLATE_ID_CAR) {
+                            ws.send(builder.encode(getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
+                            setTimeout(() => ws.send(builder.encode(getEnterCarMsg()), 200));
+                            // ws.send(builder.encode(getEnterCarMsg()));
+                        } else {
+                            ws.send(builder.encode(getWarpMsg()));
+                        }
                     } else if (msg instanceof CSProto.CMD_WARP_CS) {
                         let dest = new CSProto.CMD_WARP_SC();
                         dest.wMapID = msg.wMapID;
                         dest.llServerUnixtimeMs = new Date().getTime();
                         ws.send(builder.encode(dest));
+                        if (msg.wMapID == CSProto.MAP_TEMPLATE_ID_CAR) {
+                            ws.send(builder.encode(getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
+                            // ws.send(builder.encode(getEnterCarMsg()));
+                        }
                     } else if (msg instanceof CSProto.CMD_PING_CS) {
                         let msg = new CSProto.CMD_PING_SC();
                         msg.dwClientTick = new Date().getTime();
