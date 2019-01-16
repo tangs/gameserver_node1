@@ -34,7 +34,5 @@ http.createServer(function(req, res) {
             res.end(base64Data);
         });
     }
-
-    
 }).listen(port);
 console.log("start auth server at port:" + port);

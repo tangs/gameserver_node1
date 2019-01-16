@@ -49,7 +49,5 @@ http.createServer(function(req, res) {
             res.end(base64Data);
         });
     }
-
-    
 }).listen(port);
 console.log("start query server at port:" + port);
