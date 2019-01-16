@@ -16,6 +16,7 @@ module gameserver {
             const wss = new WebSocketServer({
                 port: port
             });
+            let loopTime = 20;
 
             let getAuthMsg = () => {
                 let msg = new csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_SC;
@@ -43,6 +44,10 @@ module gameserver {
                 p.bPropType = CSProto.LIFEATT_GOLD;
                 p.llPropValue = 123456789;
                 att.push(p)
+                let p1 = new CSProto.PROPERTY();
+                p1.bPropType = CSProto.LIFEATT_VIPLEVEL;
+                p1.llPropValue = 15;
+                att.push(p1)
                 return msg;
             };
 
@@ -53,21 +58,32 @@ module gameserver {
                 let stData = dest.stAllData;
                 stData.dwRoundID = 100;
                 stData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
-                stData.wLeftBetTime = 30;
+                stData.wLeftBetTime = loopTime;
                 return dest;
             }
 
             wss.on('connection', function (ws) {
+                let runIntervalId = null;
                 console.log(`[SERVER] connection()`);
                 ws.on('open', function () {
                     console.log(`[CLIENT] open()`);
                 });
                 ws.on('message', function (message) {
                     console.log(`[SERVER] Received: ${message}`);
-                    let builder = new MsgBuilder.csProtoBuilder();
                     // let 
+
+                    let builder = new MsgBuilder.csProtoBuilder();
                     let buffer = new Uint8Array(message);
                     let msg = builder.decode(buffer);
+                    let run = () => {
+                        let dest = new CSProto.CMD_CAR_ROUND_END_SC();
+                        dest.bPrizeRet = 71 + Math.random() * 8;
+                        dest.llGotBaseGold = 5000;
+                        let nData = dest.stNewstData;
+                        nData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
+                        nData.wLeftBetTime = loopTime;
+                        ws.send(builder.encode(dest));
+                    };
                     
                     console.log(`[SERVER] Received: ${msg}`);
                     if (msg instanceof csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_CS) {
@@ -80,8 +96,9 @@ module gameserver {
                         ws.send(builder.encode(getRoleMiscMsg()));
                         if (msg.iMapTemplateID == CSProto.MAP_TEMPLATE_ID_CAR) {
                             ws.send(builder.encode(getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
-                            setTimeout(() => ws.send(builder.encode(getEnterCarMsg()), 200));
-                            // ws.send(builder.encode(getEnterCarMsg()));
+                            // setTimeout(() => ws.send(builder.encode(getEnterCarMsg()), 200));
+                            ws.send(builder.encode(getEnterCarMsg()));
+                            runIntervalId = setInterval(run, loopTime * 1000);
                         } else {
                             ws.send(builder.encode(getWarpMsg()));
                         }
@@ -102,9 +119,13 @@ module gameserver {
                 })
                 ws.on('error', function (error) {
                     console.log(`[CLIENT] error:${error}`);
+                    if (runIntervalId)
+                        clearInterval(runIntervalId);
                 });
                 ws.on('close', function (code, reason) {
                     console.log(`[CLIENT] close(), code:${code}, reason:${reason}`);
+                    if (runIntervalId)
+                        clearInterval(runIntervalId);
                 });
             });
 
