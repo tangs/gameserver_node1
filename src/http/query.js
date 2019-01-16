@@ -1,8 +1,8 @@
 const http = require("http");
 const querystring = require('querystring');
 const config = {
-    // ws_server: "127.0.0.1",
-    ws_server: "10.8.50.157",
+    ws_server: "127.0.0.1",
+    // ws_server: "10.8.50.157",
     ws_port: 19800,
     login_addr: "http://127.0.0.1:19992/acc"
     // login_addr: "http://10.8.50.157:19992/acc"
