@@ -7,16 +7,12 @@ const config = {
     login_addr: "http://127.0.0.1:19992/acc"
     // login_addr: "http://10.8.50.157:19992/acc"
 }
-const port = 19990;
+const port = 19992;
 
 http.createServer(function(req, res) {
     // res.writeHead(200, {"Content-Type": "text/plain"});
     // res.write("req:" + req.);
-    if (req.method == "GET") {
-        var postHTML = '';
-        res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
-        res.end(postHTML);
-    } else if (req.method == "POST") {
+    if (req.method == "POST") {
         let post = '';     
         req.on('data', function(chunk) {    
             post += chunk;
@@ -26,25 +22,14 @@ http.createServer(function(req, res) {
             const json = Buffer.from(post, 'base64').toString();
             console.log("recv:" + json);
             let data = {
-                "svr_addr": config.ws_server,
-                "svr_port": config.ws_port,
-                "ret_code": "0",
-                "client_res_root": "http://10.8.50.157:8191/clientresdown/",
-                "pkg_update_type": "0",
-                "pkg_incupdate_addr": "",
-                "inc_orgin_pkg_md5": "",
-                "inc_new_pkg_md5": "",
-                "inc_patch_pkg_md5": "",
-                "ret_pkg_addr_type": "",
-                "login_addr": config.login_addr,
-                "buyu_addr": "",
-                "func_ctl": {
-                    "pay":"wechat:19pay:commwappayunionpay"
-                }
+                "cmd":"acclogin",
+                "ret_code":"0",
+                "ret_desc":"成功",
+                "auth_token":"AAAgYWVhYTMxYWI3MDI4ZjZhYjFmNDFkOTQzNGE2ZjNkMzkAMm56eTAwMHkxNTQ1MzAwNzI0eWFlYWEzMWFiNzAyOGY2YWIxZjQxZDk0MzRhNmYzZDM5AAAAAABcPqNnAAAAEMCHdzrOIy3lTOM48KoCNcA%3D",
+                "acc_uniq_key":"a235ec39f89ef11cd00e7e70953cc3dd"
             };
             const reqData = JSON.stringify(data);
             const base64Data = Buffer.from(reqData).toString("base64");
-            // post = querystring.parse(post);
             res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
             res.end(base64Data);
         });
@@ -52,4 +37,4 @@ http.createServer(function(req, res) {
 
     
 }).listen(port);
-console.log("start query server at port:" + port);
+console.log("start auth server at port:" + port);
