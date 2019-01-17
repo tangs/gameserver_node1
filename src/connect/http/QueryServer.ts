@@ -1,10 +1,16 @@
 import {Config} from '../Config';
 const http = require("http");
+const express = require('express');
+const cors = require('cors');
 
 class QueryServer {
 
     public start(): void {
-        http.createServer(function(req, res) {
+        let app = express();
+        app.use(cors());
+        // app.listen(Config.queryServer.port, function(req, res) {
+        app.post('/dev_svraddr', function(req, res, next) {
+        // http.createServer(function(req, res) {
             if (req.method == "POST") {
                 let post = '';     
                 req.on('data', function(chunk) {    
@@ -34,16 +40,34 @@ class QueryServer {
                     const reqData = JSON.stringify(data);
                     const base64Data = Buffer.from(reqData).toString("base64");
                     // post = querystring.parse(post);
-                    res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
+                    res.writeHead(200, {
+                        'Content-Type': "application/json;charset=utf-8"
+                    });
                     res.end(base64Data);
                 });
             } else {
-                res.writeHead(400, {'Content-Type': 'text/html; charset=utf8'});
+                res.writeHead(200, {
+                    'Content-Type': "application/json;charset=utf-8"
+                });
                 res.end();
             }
-        }).listen(Config.queryServer.port);
+        });
+        app.listen(Config.queryServer.port);
+        // }).listen(Config.queryServer.port);
         console.log("start query server at port:" + Config.queryServer.port);
     }
 }
+
+// let app = express();
+// app.use(cors());
+//设置跨域访问
+// app.all('*', function(req, res, next) {
+// 	res.header("Access-Control-Allow-Origin", "*");
+// 	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+// 	res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+// 	res.header("X-Powered-By",' 3.2.1');
+// 	res.header("Content-Type", "application/json;charset=utf-8");
+// 	next();
+// });
 
 new QueryServer().start();
