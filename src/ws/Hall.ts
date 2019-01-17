@@ -69,7 +69,7 @@ module gameserver {
                     console.log(`[CLIENT] open()`);
                 });
                 ws.on('message', function (message) {
-                    console.log(`[SERVER] Received: ${message}`);
+                    // console.log(`[SERVER] Received: ${message}`);
                     // let 
 
                     let builder = new MsgBuilder.csProtoBuilder();
@@ -85,7 +85,7 @@ module gameserver {
                         ws.send(builder.encode(dest));
                     };
                     
-                    console.log(`[SERVER] Received: ${msg}`);
+                    console.log(`[SERVER] Received:` + JSON.stringify(msg));
                     if (msg instanceof csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_CS) {
                         let msg = getAuthMsg();
                         ws.send(builder.encode(msg));
