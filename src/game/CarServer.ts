@@ -14,6 +14,7 @@ export class CarServer {
     private mb: MyMsgBuilder = MyMsgBuilder.getInstance();
     private users: Array<UserInfo> = [];
     private lastStartTime: number;
+    private recodes: Array<number> = [];
 
     private loopId: number = 0;
 
@@ -33,6 +34,7 @@ export class CarServer {
         dest.bIfCanJoinPlay = 1;
         let stData = dest.stAllData;
         stData.dwRoundID = this.loopId++;
+        stData.abHisPrize = this.recodes;
         if (leftTime > 0) {
             stData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
             stData.wLeftBetTime = leftTime;
@@ -45,11 +47,16 @@ export class CarServer {
 
     private getRoundEndMsg(): csprotos.message {
         let dest = new CSProto.CMD_CAR_ROUND_END_SC();
-        dest.bPrizeRet = 71 + Math.random() * 8;
+        dest.bPrizeRet = Math.floor(71 + Math.random() * 8);
         dest.llGotBaseGold = 5000;
         let nData = dest.stNewstData;
         nData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
         nData.wLeftBetTime = Math.floor(CarServer.LOOP_TIME / 1000);
+        this.recodes.splice(0, 0, dest.bPrizeRet);
+        if (this.recodes.length > 8) {
+            // this.recodes.shift();
+            this.recodes.pop();
+        }
         return dest;
     }
 
