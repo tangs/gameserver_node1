@@ -264,6 +264,9 @@ export namespace csprotos {
 		}
 
 		public read(type: any, length: number = 1): any {
+			if (length == 0) {
+				return 0;
+			}
 			if (length > 1) {
 				var val = new Array<number>(length);
 				for (var i = 0; i < length; i++) {

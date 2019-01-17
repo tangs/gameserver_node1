@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "启动程序",
-            "program": "${workspaceFolder}/build/ws/Hall.js",
+            "program": "${workspaceFolder}/build/connect/ws/GameServer.js",
             "outFiles": [
                 
             ]

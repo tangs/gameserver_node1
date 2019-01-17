@@ -1,0 +1,106 @@
+import { UserManager } from "../user/UserManager";
+import { UserInfo } from "../user/UserInfo";
+import { csprotos } from "../protos/csProtoDecoder";
+import { CSProto } from "../protos/TinyGameCSProto.xml";
+import { MyMsgBuilder } from "../msg/MyMsgBuilder";
+
+export class CarServer {
+    private static instance: CarServer = null;
+
+    private static LOOP_TIME: number = 30 * 1000;
+
+    private runId: any = null;
+    private um: UserManager = UserManager.getInstance();
+    private mb: MyMsgBuilder = MyMsgBuilder.getInstance();
+    private users: Array<UserInfo> = [];
+    private lastStartTime: number;
+
+    private loopId: number = 0;
+
+    public static getInstance(): CarServer {
+        if (CarServer.instance == null) {
+            CarServer.instance = new CarServer();
+        }
+        return CarServer.instance;
+    }
+
+    private getEnterEndMsg(): csprotos.message {
+        let curTime = new Date().getTime();
+        let leftTime = (this.lastStartTime + CarServer.LOOP_TIME - curTime) / 1000;
+        leftTime = Math.floor(leftTime);
+        let dest = new CSProto.CMD_CAR_ENTERDATA_SC();
+        dest.dwTableID = 1000;
+        dest.bIfCanJoinPlay = 1;
+        let stData = dest.stAllData;
+        stData.dwRoundID = this.loopId++;
+        if (leftTime > 0) {
+            stData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
+            stData.wLeftBetTime = leftTime;
+        } else {
+            stData.bTabStatus = CSProto.LOTTERY_CURSTATUS_WILLRUNNING;
+            stData.wLeftBetTime = Math.floor(CarServer.LOOP_TIME / 1000);
+        }
+        return dest;
+    }
+
+    private getRoundEndMsg(): csprotos.message {
+        let dest = new CSProto.CMD_CAR_ROUND_END_SC();
+        dest.bPrizeRet = 71 + Math.random() * 8;
+        dest.llGotBaseGold = 5000;
+        let nData = dest.stNewstData;
+        nData.bTabStatus = CSProto.LOTTERY_CURSTATUS_CANBET;
+        nData.wLeftBetTime = Math.floor(CarServer.LOOP_TIME / 1000);
+        return dest;
+    }
+
+    private roundEnd() {
+        let msg = this.mb.encode(this.getRoundEndMsg());
+        const infos = this.users;
+        let len = infos.length;
+        for (let i = 0; i < len; ++i) {
+            let info = infos[i];
+            if (info.isConneted && info.ws) {
+                info.coin += 100;
+                info.ws.send(msg);
+            }
+        }
+        this.lastStartTime = new Date().getTime();
+    }
+
+    public start(): void {
+        this.roundEnd();
+        this.runId = setInterval(this.roundEnd.bind(this), CarServer.LOOP_TIME);
+    }
+
+    public end(): void {
+        if (this.runId)
+            clearInterval(this.runId);
+    }
+
+    public userEnter(key: string): void {
+        var info = this.um.getUserInfo(key);
+        if (info.isConneted && info.ws) {
+            info.ws.send(this.mb.encode(this.getEnterEndMsg()));
+        }
+        const infos = this.users;
+        let len = infos.length;
+        for (let i = 0; i < len; ++i) {
+            if (info == infos[i]) {
+                return;
+            }
+        }
+        this.users.push(info);
+    }
+
+    public userLeave(key: string): void {
+        var info = this.um.getUserInfo(key);
+        const infos = this.users;
+        let len = infos.length;
+        for (let i = 0; i < len; ++i) {
+            if (info == infos[i]) {
+                infos.splice(i, 1);
+                return;
+            }
+        }
+    }
+}

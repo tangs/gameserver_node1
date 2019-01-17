@@ -1,5 +1,4 @@
 const http = require("http");
-const querystring = require('querystring');
 const port = 19992;
 
 http.createServer(function(req, res) {
