@@ -30,20 +30,12 @@ class AuthServer {
                     const resData = JSON.stringify(data);
                     const base64Data = Buffer.from(resData).toString("base64");
                     res.writeHead(200, {
-                        'Access-Control-Allow-Origin': "*",
-                        'Access-Control-Allow-Headers': "X-Requested-With",
-                        'Access-Control-Allow-Methods': "PUT,POST,GET,DELETE,OPTIONS",
-                        'X-Powered-By':' 3.2.1',
                         'Content-Type': "application/json;charset=utf-8"
                     });
                     res.end(base64Data);
                 });
             } else {
                 res.writeHead(200, {
-                    'Access-Control-Allow-Origin': "*",
-                    'Access-Control-Allow-Headers': "X-Requested-With",
-                    'Access-Control-Allow-Methods': "PUT,POST,GET,DELETE,OPTIONS",
-                    'X-Powered-By':' 3.2.1',
                     'Content-Type': "application/json;charset=utf-8"
                 });
                 res.end();
