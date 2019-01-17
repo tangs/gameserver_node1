@@ -31,7 +31,8 @@ class QueryServer {
                         "inc_patch_pkg_md5": "",
                         "ret_pkg_addr_type": "",
                         // "login_addr": Config.getUrl(Config.authServer),
-                        "login_addr": "http://127.0.0.1:19992/acc",
+                        "login_addr": `http://${Config.authServer.host}:${Config.authServer.port}/acc`,
+                        // "login_addr": `http://127.0.0.1:19992/acc`,
                         "buyu_addr": "",
                         "func_ctl": {
                             "pay":"wechat:19pay:commwappayunionpay"
@@ -44,6 +45,7 @@ class QueryServer {
                         'Content-Type': "application/json;charset=utf-8"
                     });
                     res.end(base64Data);
+                    console.log("reqest:" + reqData);
                 });
             } else {
                 res.writeHead(200, {
