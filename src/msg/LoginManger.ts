@@ -54,13 +54,6 @@ export class LoginManger {
             dest.bResult = 0;
             ws.send(this.mb.encode(dest));
             ws.send(this.mb.encode(this.getRoleMiscMsg(acc)));
-            // if (msg.iMapTemplateID == CSProto.MAP_TEMPLATE_ID_CAR) {
-            //     ws.send(this.mb.encode(this.getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
-            //     // ws.send(mb.encode(this.getEnterCarMsg()));
-            //     CarServer.getInstance().userEnter(acc);
-            // } else {
-            //     ws.send(this.mb.encode(this.getWarpMsg()));
-            // }
             ws.send(this.mb.encode(this.getWarpMsg(msg.iMapTemplateID)));
             AppEventEmitter.getInstance().emit(Events.ENTER_ROOM, acc, msg.iMapTemplateID);
         }));
