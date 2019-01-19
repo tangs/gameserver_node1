@@ -6,32 +6,32 @@ import { AppEventEmitter } from "../event/AppEventEmitter";
 import { Events } from "../event/Events";
 
 export class UserManager {
-    private static instance = null;
+    private static instance: UserManager = null;
 
     private users = {};
 
-    public static getInstance() {
+    public static getInstance(): UserManager {
         if (UserManager.instance == null) {
             UserManager.instance = new UserManager();
         }
         return UserManager.instance;
     }
 
-    public getUserInfo(key: string): UserInfo {
-        return this.users[key];
+    public getUserInfo(acc: string): UserInfo {
+        return this.users[acc];
     }
     
-    public userConnect(key: string, ws: any, handler: Handler): void {
+    public userConnect(acc: string, ws: any, handler: Handler): void {
         let succ = (info: UserInfo) => {
             info.ws = ws;
             info.isConneted = true;
             handler.runWith(true);
-            AppEventEmitter.getInstance().emit(Events.USER_CONNECT, key);
+            AppEventEmitter.getInstance().emit(Events.USER_CONNECT, acc);
         }
-        if (this.users[key] == null) {
-            DbHelper.getInstance().getUserInfo(key, new Handler(this, (row) => {
+        if (this.users[acc] == null) {
+            DbHelper.getInstance().getUserInfo(acc, new Handler(this, (row) => {
                 if (row != null) {
-                    let usr: UserInfo = this.users[key];
+                    let usr: UserInfo = this.users[acc];
                     usr.userid = row.userid;
                     usr.account = row.account;
                     usr.deviceid = row.account;
@@ -45,16 +45,16 @@ export class UserManager {
                     handler.runWith(false);
                 }
             }));
-            this.users[key] = new UserInfo();
+            this.users[acc] = new UserInfo();
         } else {
             // let info = this.users[key];
-            succ(this.users[key]);
+            succ(this.users[acc]);
         }
     }
 
-    public userDisConnect(key: string) {
-        AppEventEmitter.getInstance().emit(Events.USER_DISCONNECT, key);
-        let usr: UserInfo = this.users[key];
+    public userDisConnect(acc: string) {
+        AppEventEmitter.getInstance().emit(Events.USER_DISCONNECT, acc);
+        let usr: UserInfo = this.users[acc];
         if (usr == null) {
             return;
         }

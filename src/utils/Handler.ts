@@ -45,9 +45,13 @@ export class Handler {
      * 执行处理器，携带额外数据。
      * @param	data 附加的回调数据，可以是单数据或者Array(作为多参)。
      */
-    public runWith(data: any): any {
+    public runWith(data: any, dealArgs: boolean = true): any {
         let args = this.args ? this.args : [];
-        args = args.concat(data);
+        if (dealArgs) {
+            args = args.concat(data);
+        } else {
+            args.push(data);
+        }
         this.method.apply(this.caller, args);
     }
     /**

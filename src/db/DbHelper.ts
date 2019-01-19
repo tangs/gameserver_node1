@@ -178,4 +178,26 @@ export class DbHelper {
             }
         }));
     }
+
+    public getMailsByDid(destId: number, handler: Handler): void {
+        const sql = 'SELECT id, sname, title, content, stime FROM t_mails WHERE did = ' + destId;
+        console.log(sql);
+        this.query(sql, new Handler(this, (err, rows, fields) => {
+            if (err) {
+                if (handler) {
+                    handler.runWith(null);
+                }
+                throw err;
+            }
+
+            if(rows.length == 0){
+                if (handler) {
+                    handler.runWith(null);
+                }
+                return;
+            }
+            // rows[0].name = crypto.fromBase64(rows[0].name);
+            handler.runWith(rows, false);
+        }));
+    }
 }
