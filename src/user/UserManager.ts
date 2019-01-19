@@ -2,6 +2,8 @@ import { UserInfo } from "./UserInfo";
 import { DbHelper } from "../db/DbHelper";
 import { Handler } from "../utils/Handler";
 import { userInfo } from "os";
+import { AppEventEmitter } from "../event/AppEventEmitter";
+import { Events } from "../event/Events";
 
 export class UserManager {
     private static instance = null;
@@ -20,6 +22,12 @@ export class UserManager {
     }
     
     public userConnect(key: string, ws: any, handler: Handler): void {
+        let succ = (info: UserInfo) => {
+            info.ws = ws;
+            info.isConneted = true;
+            handler.runWith(true);
+            AppEventEmitter.getInstance().emit(Events.USER_CONNECT, key);
+        }
         if (this.users[key] == null) {
             DbHelper.getInstance().getUserInfo(key, new Handler(this, (row) => {
                 if (row != null) {
@@ -32,25 +40,20 @@ export class UserManager {
                     usr.avatar = row.avatar;
                     usr.lv = row.lv;
                     usr.coin = row.coin;
-
-                    usr.ws = ws;
-                    usr.isConneted = true;
+                    succ(usr);
+                } else {
+                    handler.runWith(false);
                 }
-                handler.runWith(row != null);
             }));
             this.users[key] = new UserInfo();
         } else {
-            let info = this.users[key];
-            info.ws = ws;
-            info.isConneted = true;
-            handler.runWith(true);
+            // let info = this.users[key];
+            succ(this.users[key]);
         }
-        // let usr: UserInfo = this.users[key];
-        // usr.ws = ws;
-        // usr.isConneted = true;
     }
 
     public userDisConnect(key: string) {
+        AppEventEmitter.getInstance().emit(Events.USER_DISCONNECT, key);
         let usr: UserInfo = this.users[key];
         if (usr == null) {
             return;

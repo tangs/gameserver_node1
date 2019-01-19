@@ -4,8 +4,8 @@ import { csprotos } from "../protos/csProtoDecoder";
 import { UserManager } from "../user/UserManager";
 import { MyMsgBuilder } from "./MyMsgBuilder";
 import { CSProto } from "../protos/TinyGameCSProto.xml";
-import { UserInfo } from "../user/UserInfo";
-import { CarServer } from "../game/CarServer";
+import { AppEventEmitter } from "../event/AppEventEmitter";
+import { Events } from "../event/Events";
 
 export class LoginManger {
     private static instance: LoginManger = null;
@@ -48,22 +48,24 @@ export class LoginManger {
     };
 
     public start(): void {
-        this.md.regeisterMsg("CMD_ALOGIN", new Handler(this, (msg1: csprotos.message, userKey: string, ws: any) => {
+        this.md.regeisterMsg("CMD_ALOGIN", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
             let msg = msg1 as CSProto.CMD_ALOGIN_CS;
             const dest = new CSProto.CMD_ALOGIN_SC();
             dest.bResult = 0;
             ws.send(this.mb.encode(dest));
-            ws.send(this.mb.encode(this.getRoleMiscMsg(userKey)));
-            if (msg.iMapTemplateID == CSProto.MAP_TEMPLATE_ID_CAR) {
-                ws.send(this.mb.encode(this.getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
-                // ws.send(mb.encode(this.getEnterCarMsg()));
-                CarServer.getInstance().userEnter(userKey);
-            } else {
-                ws.send(this.mb.encode(this.getWarpMsg()));
-            }
+            ws.send(this.mb.encode(this.getRoleMiscMsg(acc)));
+            // if (msg.iMapTemplateID == CSProto.MAP_TEMPLATE_ID_CAR) {
+            //     ws.send(this.mb.encode(this.getWarpMsg(CSProto.MAP_TEMPLATE_ID_CAR)));
+            //     // ws.send(mb.encode(this.getEnterCarMsg()));
+            //     CarServer.getInstance().userEnter(acc);
+            // } else {
+            //     ws.send(this.mb.encode(this.getWarpMsg()));
+            // }
+            ws.send(this.mb.encode(this.getWarpMsg(msg.iMapTemplateID)));
+            AppEventEmitter.getInstance().emit(Events.ENTER_ROOM, acc, msg.iMapTemplateID);
         }));
 
-        this.md.regeisterMsg("CMD_PING", new Handler(this, (msg1: csprotos.message, userKey: string, ws: any) => {
+        this.md.regeisterMsg("CMD_PING", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
             let msg = new CSProto.CMD_PING_SC();
             msg.dwClientTick = new Date().getTime();
             ws.send(this.mb.encode(msg));

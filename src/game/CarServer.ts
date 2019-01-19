@@ -3,6 +3,8 @@ import { UserInfo } from "../user/UserInfo";
 import { csprotos } from "../protos/csProtoDecoder";
 import { CSProto } from "../protos/TinyGameCSProto.xml";
 import { MyMsgBuilder } from "../msg/MyMsgBuilder";
+import { AppEventEmitter } from "../event/AppEventEmitter";
+import { Events } from "../event/Events";
 
 export class CarServer {
     private static instance: CarServer = null;
@@ -27,6 +29,25 @@ export class CarServer {
 
     constructor() {
         this.recodes.push(73);
+        this.init();
+    }
+
+    private init(): void {
+        this.initEvents();
+    }
+
+    private initEvents(): void {
+        const aee = AppEventEmitter.getInstance();
+        aee.on(Events.ENTER_ROOM, (acc: string, mapId: number) => {
+            if (mapId == CSProto.MAP_TEMPLATE_ID_CAR) {
+                this.userEnter(acc);
+            } else {
+                this.userLeave(acc);
+            }
+        });
+        aee.on(Events.USER_DISCONNECT, (acc: string) => {
+            this.userLeave(acc);
+        });
     }
 
     private getEnterEndMsg(): csprotos.message {
@@ -88,8 +109,8 @@ export class CarServer {
             clearInterval(this.runId);
     }
 
-    public userEnter(key: string): void {
-        var info = this.um.getUserInfo(key);
+    public userEnter(acc: string): void {
+        var info = this.um.getUserInfo(acc);
         if (info.isConneted && info.ws) {
             info.ws.send(this.mb.encode(this.getEnterEndMsg()));
         }
@@ -103,8 +124,8 @@ export class CarServer {
         this.users.push(info);
     }
 
-    public userLeave(key: string): void {
-        var info = this.um.getUserInfo(key);
+    public userLeave(acc: string): void {
+        var info = this.um.getUserInfo(acc);
         const infos = this.users;
         let len = infos.length;
         for (let i = 0; i < len; ++i) {
