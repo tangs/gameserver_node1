@@ -5,16 +5,16 @@ import {CSProto} from '../../protos/TinyGameCSProto.xml';
 import {MsgBuilder} from '../../protos/csProtoBuilder';
 import {csproto} from '../../protos/KConnectProto.xml';
 import { MsgDispatcher } from '../../msg/MsgDispatcher';
-import { CarServer } from '../../game/CarServer';
-import { LoginManger } from '../../msg/LoginManger';
+// import { CarServer } from '../../game/CarServer';
+// import { LoginManger } from '../../msg/LoginManger';
 import { Handler } from '../../utils/Handler';
 const WebSocket = require("ws");
 
 export class GameServer {
     private decodeBuffer: Uint8Array = new Uint8Array(1024 * 20);
     public start(): void {
-        CarServer.getInstance().start();
-        LoginManger.getInstance().start();
+        // CarServer.getInstance().start();
+        // LoginManger.getInstance().start();
         const WebSocketServer = WebSocket.Server;
         const wss = new WebSocketServer({
             port: (Config.gameServer.port + 20000)
@@ -68,4 +68,4 @@ export class GameServer {
     }
 }
 
-new GameServer().start();
+// new GameServer().start();
