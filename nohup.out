@@ -166,3 +166,81 @@ recv:{"cmd":"acclogin","auth_channel":0,"auth_account":"47a627b39c6de81c3a584e23
 recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"1ef6ebe08b9c59439cf66bba9ce92f4d","csproto_version":36}
 reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
 recv:{"cmd":"acclogin","auth_channel":0,"auth_account":"1ef6ebe08b9c59439cf66bba9ce92f4d","device_id":"1ef6ebe08b9c59439cf66bba9ce92f4d"}
+start query server at port:19990
+events.js:167
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::19990
+    at Server.setupListenHandle [as _listen2] (net.js:1290:14)
+    at listenInCluster (net.js:1338:12)
+    at Server.listen (net.js:1425:7)
+    at Function.listen (/Users/tangs/Documents/gameserver_node1/node_modules/express/lib/application.js:618:24)
+    at QueryServer.start (/Users/tangs/Documents/gameserver_node1/build/connect/http/QueryServer.js:58:13)
+    at Object.<anonymous> (/Users/tangs/Documents/gameserver_node1/build/connect/http/QueryServer.js:74:19)
+    at Module._compile (internal/modules/cjs/loader.js:689:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)
+    at Module.load (internal/modules/cjs/loader.js:599:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1317:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:745:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:743:3)
+start auth server at port:19992
+events.js:167
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::19992
+    at Server.setupListenHandle [as _listen2] (net.js:1290:14)
+    at listenInCluster (net.js:1338:12)
+    at Server.listen (net.js:1425:7)
+    at Function.listen (/Users/tangs/Documents/gameserver_node1/node_modules/express/lib/application.js:618:24)
+    at AuthServer.start (/Users/tangs/Documents/gameserver_node1/build/connect/http/AuthServer.js:75:13)
+    at Object.<anonymous> (/Users/tangs/Documents/gameserver_node1/build/connect/http/AuthServer.js:101:18)
+    at Module._compile (internal/modules/cjs/loader.js:689:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)
+    at Module.load (internal/modules/cjs/loader.js:599:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1317:8)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:745:11)
+    at startup (internal/bootstrap/node.js:283:19)
+    at bootstrapNodeJSCore (internal/bootstrap/node.js:743:3)
+start query server at port:19990
+start auth server at port:19992
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+recv:{"cmd":"acclogin","auth_channel":0,"auth_account":"e17ba26ad0f5e01781a2793e6eb2df48","device_id":"e17ba26ad0f5e01781a2793e6eb2df48"}
+create user fail:e17ba26ad0f5e01781a2793e6eb2df48
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+start game server on port:39800
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+[SERVER] connection()
+[SERVER] Received:{"AuthChannel":0,"ChannelAcc":"e17ba26ad0f5e01781a2793e6eb2df48","DeviceID":"e17ba26ad0f5e01781a2793e6eb2df48","IdentityToken":"e17ba26ad0f5e01781a2793e6eb2df48"}
+[SERVER] Received:{"bVerionType":2,"bVerionMain":0,"bVerionFeature":0,"bVerionBuild":0,"szAccount":"e17ba26ad0f5e01781a2793e6eb2df48","szName":"e17ba26ad0f5e01781a2","dwCltVer":40001,"szChannel":"000","bIfCheckUpdate":0,"bOperatersType":0,"dwSpecChannlVer":0,"szXGToken":"","iMapTemplateID":601}
+[CLIENT] close(), code:1001, reason:
+recv:{"os_type":0,"oss_channel":"000","client_version":"40001","mobile_type":"ModelName","operaters_type":0,"device_id":"e17ba26ad0f5e01781a2793e6eb2df48","csproto_version":36}
+reqest:{"svr_addr":"192.168.1.14","svr_port":19800,"ret_code":"0","client_res_root":"http://10.8.50.157:8191/clientresdown/","pkg_update_type":"0","pkg_incupdate_addr":"","inc_orgin_pkg_md5":"","inc_new_pkg_md5":"","inc_patch_pkg_md5":"","ret_pkg_addr_type":"","login_addr":"http://192.168.1.14:19992/acc","buyu_addr":"","func_ctl":{"pay":"wechat:19pay:commwappayunionpay"}}
+[SERVER] connection()
+[SERVER] Received:{"AuthChannel":0,"ChannelAcc":"e17ba26ad0f5e01781a2793e6eb2df48","DeviceID":"e17ba26ad0f5e01781a2793e6eb2df48","IdentityToken":"e17ba26ad0f5e01781a2793e6eb2df48"}
+[SERVER] Received:{"bVerionType":2,"bVerionMain":0,"bVerionFeature":0,"bVerionBuild":0,"szAccount":"e17ba26ad0f5e01781a2793e6eb2df48","szName":"e17ba26ad0f5e01781a2","dwCltVer":40001,"szChannel":"000","bIfCheckUpdate":0,"bOperatersType":0,"dwSpecChannlVer":0,"szXGToken":"","iMapTemplateID":601}
+[SERVER] Received:{"dwClientTick":1698688863,"dwLastDelay":2147483647}
+[SERVER] Received:{"dwClientTick":1698693864,"dwLastDelay":5}
+[SERVER] Received:{"dwClientTick":1698698864,"dwLastDelay":4}
+[SERVER] Received:{"dwClientTick":1698703865,"dwLastDelay":6}
+[SERVER] Received:{"dwClientTick":1698708866,"dwLastDelay":6}
+[SERVER] Received:{"dwClientTick":1698713866,"dwLastDelay":5}
+[SERVER] Received:{"dwClientTick":1698718868,"dwLastDelay":16}
+[SERVER] Received:{"dwClientTick":1698723868,"dwLastDelay":3}

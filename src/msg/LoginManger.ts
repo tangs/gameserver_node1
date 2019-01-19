@@ -42,7 +42,7 @@ export class LoginManger {
         att.push(p)
         let p1 = new CSProto.PROPERTY();
         p1.bPropType = CSProto.LIFEATT_VIPLEVEL;
-        p1.llPropValue = info.vipLv;
+        p1.llPropValue = info.lv;
         att.push(p1)
         return msg;
     };

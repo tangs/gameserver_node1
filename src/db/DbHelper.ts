@@ -1,5 +1,6 @@
 import { DbConfig } from "./DbConfig";
 import { Handler } from "../utils/Handler";
+import { StringHelper } from "../utils/StringHelper";
 
 const mysql = require("mysql");
 
@@ -8,7 +9,7 @@ export class DbHelper {
 
     private pool: any = null;
 
-    public static GetInstance(): DbHelper {
+    public static getInstance(): DbHelper {
         if (DbHelper.instance == null) {
             DbHelper.instance = new DbHelper();
             DbHelper.instance.init();
@@ -104,14 +105,44 @@ export class DbHelper {
         }));
     }
 
+    public updateUserInfo(info: any, handler: Handler) : void {
+        let keys = info.objects();
+        const userid = info ? info.userid : null;
+        if (userid == null || handler == null || keys.length <= 1) {
+            handler.runWith(false);
+            return;
+        }
+        let paras = "";
+        for (let i = 0; i < keys.length; ++i) {
+            let key = keys[i];
+            if (key == "userid") {
+                continue;
+            }
+            paras += StringHelper.format('{0}={1},', key, info[key]);
+        }
+        if (paras.length) {
+            paras = paras.substr(0, paras.length - 1);
+        }
+        let sql = 'UPDATE t_users SET {0} WHERE userid="{1}"';
+        sql = StringHelper.format(sql, paras, userid);
+        console.log(sql);
+        this.query(sql, new Handler(this, (err, rows, fields) => {
+            if (err) {
+                throw err;
+            }
+            handler.runWith(rows);
+        }));
+    }
+
     public createUser(info: any, handler: Handler): void {
-        let acc = info ? info.acc : null;
+        const acc = info ? info.account : null;
         if (acc == null || acc.length == 0 || handler == null) {
             handler.runWith(false);
             return;
         }
-        var sql = 'INSERT INTO t_users(account, deviceid, name, sex, avatar, lv, coin) VALUES("{0}", "{1}","{2}",{3},{4},{5},{6})';
-        sql = sql.format(userId,account,name,coins,gems,sex,headimg);
+        let sql = 'INSERT INTO t_users(account, deviceid, name, sex, avatar, lv, coin) VALUES("{0}","{1}","{2}",{3},"{4}",{5},{6})';
+        sql = StringHelper.format(sql, acc, info.deviceid, 
+                info.name, info.sex, info.avatar, info.lv, info.coin);
         console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
