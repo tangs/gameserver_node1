@@ -49,6 +49,7 @@ export class DbHelper {
             return;
         }
         const sql = 'SELECT userid FROM t_users WHERE account = "' + acc + '"';
+        console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
                 throw err;
@@ -68,7 +69,8 @@ export class DbHelper {
             handler.runWith(null);
             return;
         }
-        const sql = 'SELECT userid, account, name, sex, lv, coin FROM t_users WHERE account = "' + acc + '"';
+        const sql = 'SELECT userid, account, name, sex, avatar, lv, coin FROM t_users WHERE account = "' + acc + '"';
+        console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
                 handler.runWith(null);
@@ -90,6 +92,7 @@ export class DbHelper {
             return;
         }
         const sql = 'SELECT userid, account, name, sex, lv, coin FROM t_users WHERE userid = "' + userid + '"';
+        console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
                 handler.runWith(null);

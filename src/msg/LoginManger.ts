@@ -34,7 +34,7 @@ export class LoginManger {
         let base = msg.stData.stBase;
         base.szName = info.name;
         base.bSex = info.sex;
-        base.szSelfDefPhoto = info.awatar;
+        base.szSelfDefPhoto = info.avatar;
         let att = base.astPlayerAttr;
         let p = new CSProto.PROPERTY();
         p.bPropType = CSProto.LIFEATT_GOLD;

@@ -7,6 +7,7 @@ import {csproto} from '../../protos/KConnectProto.xml';
 import { MsgDispatcher } from '../../msg/MsgDispatcher';
 import { CarServer } from '../../game/CarServer';
 import { LoginManger } from '../../msg/LoginManger';
+import { Handler } from '../../utils/Handler';
 const WebSocket = require("ws");
 
 export class GameServer {
@@ -34,12 +35,15 @@ export class GameServer {
                 console.log(`[SERVER] Received:` + JSON.stringify(msg));
                 if (msg instanceof csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_CS) {
                     key = msg.IdentityToken;
-                    let dest = new csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_SC;
-                    dest.RetCode = 0;
-                    dest.RetCodeDesc = "";
-                    dest.SessionId = "111";
-                    ws.send(builder.encode(dest));
-                    um.userConnect(key, ws);
+                    console.log("222:" + key);
+                    um.userConnect(key, ws, new Handler(this, (ret) => {
+                        let dest = new csproto.KConnectProto.WX_CMD_NEW_UNIAUTH_SC;
+                        dest.RetCode = 0;
+                        dest.RetCodeDesc = "";
+                        dest.SessionId = "111";
+                        ws.send(builder.encode(dest));
+                        console.log("ret:" + ret);
+                    }));
                 } else {
                     md.onRecviedMsg(msg, key, ws);
                 }

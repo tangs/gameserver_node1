@@ -25,6 +25,10 @@ export class CarServer {
         return CarServer.instance;
     }
 
+    constructor() {
+        this.recodes.push(73);
+    }
+
     private getEnterEndMsg(): csprotos.message {
         let curTime = new Date().getTime();
         let leftTime = (this.lastStartTime + CarServer.LOOP_TIME - curTime) / 1000;

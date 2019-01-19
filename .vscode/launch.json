@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "启动程序",
-            "program": "${workspaceFolder}/build/connect/http/AuthServer.js",
+            "program": "${workspaceFolder}/build/connect/ws/GameServer.js",
             "outFiles": [
                 
             ]
