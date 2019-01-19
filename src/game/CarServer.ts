@@ -92,7 +92,7 @@ export class CarServer {
         for (let i = 0; i < len; ++i) {
             let info = infos[i];
             if (info.isConneted && info.ws) {
-                info.coin += 100;
+                info.addCoin(5000);
                 info.ws.send(msg);
             }
         }

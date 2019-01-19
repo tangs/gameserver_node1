@@ -1,3 +1,8 @@
+import { DbHelper } from "../db/DbHelper";
+import { Handler } from "../utils/Handler";
+import { CSProto } from "../protos/TinyGameCSProto.xml";
+import { MyMsgBuilder } from "../msg/MyMsgBuilder";
+
 export class UserInfo {
     public userid: number = 0;
     public account: string = "";
@@ -12,4 +17,28 @@ export class UserInfo {
     public mapid: number = 0;
     public ws: any;
     public isConneted: boolean = false;
+
+    private mb: MyMsgBuilder = MyMsgBuilder.getInstance();
+
+    public setCoin(coin: number): void {
+        this.coin = coin;
+        const info = {
+            userid: this.userid,
+            coin: coin
+        }
+        DbHelper.getInstance().updateUserInfo(info, null);
+        let msg = new CSProto.CMD_ATT_CHANGE_SC;
+        msg.dwObjectID = this.userid;
+        let p = new CSProto.PROPERTY();
+        p.bPropType = CSProto.LIFEATT_GOLD;
+        p.llPropValue = info.coin;
+        msg.astAttr.push(p);
+        if (this.ws) {
+            this.ws.send(this.mb.encode(msg));
+        }
+    }
+
+    public addCoin(coin: number): void {
+        this.setCoin(this.coin + coin);
+    }
 }

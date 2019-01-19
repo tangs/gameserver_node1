@@ -30,22 +30,28 @@ export class DbHelper {
 
     public query(sql: string , handler: Handler): void {
         this.pool.getConnection(function(err, conn){  
-            if(err){  
-                handler.runWith(err);  
-            }else{  
+            if(err) {  
+                if (handler) {
+                    handler.runWith(err);  
+                }
+            } else {  
                 conn.query(sql,function(qerr, vals, fields){  
                     //释放连接  
                     conn.release();  
                     //事件驱动回调  
-                    handler.runWith([qerr,vals,fields]);  
+                    if (handler) {
+                        handler.runWith([qerr,vals,fields]);  
+                    }
                 });  
             }  
         });  
     }
 
     public isUserExist(acc: string, handler: Handler): void {
-        if (acc == null || acc.length == 0 || handler == null) {
-            handler.runWith(null);
+        if (acc == null || acc.length == 0) {
+            if (handler) {
+                handler.runWith(null);
+            }
             return;
         }
         const sql = 'SELECT userid FROM t_users WHERE account = "' + acc + '"';
@@ -54,53 +60,63 @@ export class DbHelper {
             if (err) {
                 throw err;
             }
-    
-            if(rows.length == 0){
-                handler.runWith(false);
+            if (rows.length == 0) {
+                if (handler) {
+                    handler.runWith(false);
+                }
                 return;
             }
-    
-            handler.runWith(true);
+            if (handler) {
+                handler.runWith(true);
+            }
         }));  
     }
 
     public getUserInfo(acc: string, handler: Handler): void {
-        if (acc == null || acc.length == 0 || handler == null) {
-            handler.runWith(null);
+        if (acc == null || acc.length == 0) {
+            if (handler) {
+                handler.runWith(null);
+            }
             return;
         }
         const sql = 'SELECT userid, account, name, sex, avatar, lv, coin FROM t_users WHERE account = "' + acc + '"';
         console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
-                handler.runWith(null);
+                if (handler) {
+                    handler.runWith(null);
+                }
                 throw err;
             }
 
-            if(rows.length == 0){
-                handler.runWith(null);
+            if (rows.length == 0) {
+                if (handler) {
+                    handler.runWith(null);
+                }
                 return;
             }
             // rows[0].name = crypto.fromBase64(rows[0].name);
-            handler.runWith(rows[0]);
+            if (handler) {
+                handler.runWith(rows[0]);
+            }
         }));
     }
 
     public getUserInfoByUserid(userid: number, handler: Handler): void {
-        if (handler == null) {
-            handler.runWith(null);
-            return;
-        }
         const sql = 'SELECT userid, account, name, sex, lv, coin FROM t_users WHERE userid = "' + userid + '"';
         console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
-                handler.runWith(null);
+                if (handler) {
+                    handler.runWith(null);
+                }
                 throw err;
             }
 
             if(rows.length == 0){
-                handler.runWith(null);
+                if (handler) {
+                    handler.runWith(null);
+                }
                 return;
             }
             // rows[0].name = crypto.fromBase64(rows[0].name);
@@ -109,10 +125,12 @@ export class DbHelper {
     }
 
     public updateUserInfo(info: any, handler: Handler) : void {
-        let keys = info.objects();
+        let keys = Object.keys(info);
         const userid = info ? info.userid : null;
-        if (userid == null || handler == null || keys.length <= 1) {
-            handler.runWith(false);
+        if (userid == null || keys.length <= 1) {
+            if (handler) {
+                handler.runWith(false);
+            }
             return;
         }
         let paras = "";
@@ -133,14 +151,18 @@ export class DbHelper {
             if (err) {
                 throw err;
             }
-            handler.runWith(rows);
+            if (handler) {
+                handler.runWith(rows);
+            }
         }));
     }
 
     public createUser(info: any, handler: Handler): void {
         const acc = info ? info.account : null;
-        if (acc == null || acc.length == 0 || handler == null) {
-            handler.runWith(false);
+        if (acc == null || acc.length == 0) {
+            if (handler) {
+                handler.runWith(false);
+            }
             return;
         }
         let sql = 'INSERT INTO t_users(account, deviceid, name, sex, avatar, lv, coin) VALUES("{0}","{1}","{2}",{3},"{4}",{5},{6})';
@@ -151,7 +173,9 @@ export class DbHelper {
             if (err) {
                 throw err;
             }
-            handler.runWith(true);
+            if (handler) {
+                handler.runWith(true);
+            }
         }));
     }
 }
