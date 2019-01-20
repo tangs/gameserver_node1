@@ -55,34 +55,6 @@ export class MailServer {
                     }
                 }));
             }
-            
-            // const msg = new CSProto.CMD_GET_MAILLIST_SC();
-            // msg.bMailBoxType = CSProto.MAIL_BOX_RECV;
-            // const pi = msg.stPagePara;
-            // const list = msg.astMailList;
-            // pi.dwTotalCount = 10;
-            // pi.wPageIndex = 1;
-            // pi.wPageSize = 10;
-            // pi.wTotalPages = 1;
-            // for (let i = 0; i < pi.wPageSize; ++i) {
-            //     const info = new CSProto.MailBaseInfo();
-            //     info.bMailType = CSProto.NORMAL_MAIL_TYPE;
-            //     info.bMailStat = 0;
-            //     info.dwMailID = i;
-            //     info.dwMailTime = new Date().getTime() / 1000;
-            //     info.szRoleName = "系统";
-            //     info.szMailTitle = "标题";
-            //     info.szMailContent = "建设雄安新区是千年大计。新区首先就要新在规划、建设的理念上，要体现出前瞻性、引领性。”“要志在万里，努力打造世界一流的智慧港口、绿色港口，更好服务京津冀协同发展和共建‘一带一路’。”“建设北京城市副中心，是北京建城立都以来具有里程碑意义的一件大事，对新时代北京的发展是一个重大机遇。”考察中，总书记看得细、问得实、想得深，立足当前、着眼长远。总书记一路上那殷切期待、郑重嘱托、明确要求，为推动京津冀协同发展取得新的更大进展指明了努力方向，注入了信心和动力";
-            //     list.push(info);
-            // }
-            // if (ws) {
-            //     ws.send(mmb.encode(msg));
-            // } 
         }));
-        // this.md.regeisterMsg("CMD_PING", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
-        //     let msg = new CSProto.CMD_PING_SC();
-        //     msg.dwClientTick = new Date().getTime();
-        //     ws.send(this.mb.encode(msg));
-        // }));
     }
 }
