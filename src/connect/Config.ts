@@ -1,14 +1,14 @@
 export class Config {
     public static queryServer = {
-        host: "192.168.1.14",
+        host: "127.0.0.1",
         port: 19990
     };
     public static authServer = {
-        host: "192.168.1.14",
+        host: "127.0.0.1",
         port: 19992
     };
     public static gameServer = {
-        host: "192.168.1.14",
+        host: "127.0.0.1",
         port: 19800
     };
 
