@@ -179,6 +179,27 @@ export class DbHelper {
         }));
     }
 
+    public sendMail(info: any, handler: Handler): void {
+        if (info == null || info.sId == null|| info.addresseeId == null
+            || info.sender == null || info.title == null || info.content == null) {
+            if (handler) {
+                handler.runWith([false, "信息不完整."]);
+            }
+            return;
+        }
+        let sql = 'INSERT INTO t_mails(sid, did, sname, title, content) VALUES("{0}","{1}","{2}","{3}","{4}")';
+        sql = StringHelper.format(sql, info.sId, info.addresseeId, info.sender, info.title, info.content);
+        console.log(sql);
+        this.query(sql, new Handler(this, (err, rows, fields) => {
+            if (err) {
+                throw err;
+            }
+            if (handler) {
+                handler.runWith(true);
+            }
+        }));
+    }
+
     public getMailsByDid(destId: number, handler: Handler): void {
         const sql = 'SELECT id, sname, title, content, stime FROM t_mails WHERE did = ' + destId;
         console.log(sql);
