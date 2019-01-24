@@ -13,6 +13,6 @@ export class Config {
     };
 
     public static getUrl(server: any): string {
-        return `${server.host}:${server.port}`;
+        return `http://${server.host}:${server.port}`;
     }
 }
