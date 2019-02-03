@@ -29,18 +29,18 @@ export class LoginManger {
     };
 
     private getRoleMiscMsg(key: string): csprotos.message {
-        let info = this.um.getUserInfo(key);
-        let msg = new CSProto.CMD_ROLE_MISC_SC();
-        let base = msg.stData.stBase;
+        const info = this.um.getUserInfo(key);
+        const msg = new CSProto.CMD_ROLE_MISC_SC();
+        const base = msg.stData.stBase;
         base.szName = info.name;
         base.bSex = info.sex;
         base.szSelfDefPhoto = info.avatar;
-        let att = base.astPlayerAttr;
-        let p = new CSProto.PROPERTY();
+        const att = base.astPlayerAttr;
+        const p = new CSProto.PROPERTY();
         p.bPropType = CSProto.LIFEATT_GOLD;
         p.llPropValue = info.coin;
         att.push(p)
-        let p1 = new CSProto.PROPERTY();
+        const p1 = new CSProto.PROPERTY();
         p1.bPropType = CSProto.LIFEATT_VIPLEVEL;
         p1.llPropValue = info.lv;
         att.push(p1)
@@ -49,7 +49,7 @@ export class LoginManger {
 
     public start(): void {
         this.md.regeisterMsg("CMD_ALOGIN", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
-            let msg = msg1 as CSProto.CMD_ALOGIN_CS;
+            const msg = msg1 as CSProto.CMD_ALOGIN_CS;
             const dest = new CSProto.CMD_ALOGIN_SC();
             dest.bResult = 0;
             ws.send(this.mb.encode(dest));
@@ -59,7 +59,7 @@ export class LoginManger {
         }));
 
         this.md.regeisterMsg("CMD_PING", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
-            let msg = new CSProto.CMD_PING_SC();
+            const msg = new CSProto.CMD_PING_SC();
             msg.dwClientTick = new Date().getTime();
             ws.send(this.mb.encode(msg));
         }));

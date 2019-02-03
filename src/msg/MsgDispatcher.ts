@@ -1,7 +1,3 @@
-import { UserManager } from '../user/UserManager';
-import {CSProto} from '../protos/TinyGameCSProto.xml';
-import {MsgBuilder} from '../protos/csProtoBuilder';
-import {csproto} from '../protos/KConnectProto.xml';
 import { csprotos } from '../protos/csProtoDecoder';
 import { Handler } from '../utils/Handler';
 
@@ -36,7 +32,7 @@ export class MsgDispatcher {
     public onRecviedMsg(msg: csprotos.message, userKey: string, ws: any) {
         const name = msg.messageName();
         const infos = this.infos;
-        let len = infos.length;
+        const len = infos.length;
         for (let i = 0; i < len; ++i) {
             const info = infos[i];
             if (info.msgName == name) {
