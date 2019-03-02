@@ -2,7 +2,7 @@
   "requires": true,
   "lockfileVersion": 1,
   "dependencies": {
-    "@types/node": "^10.12.18",
+    "@types/node": "^10.12.29",
     "accepts": {
       "integrity": "sha1-63d99gEXI6OxTopywIBcjoZ0a9I=",
       "requires": {
@@ -390,9 +390,15 @@
       "resolved": "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz",
       "version": "1.1.2"
     },
-    "ws": "^6.1.2"
+    "ws": "^6.1.4"
   },
   "devDependencies": {
-    "mysql": "^2.16.0"
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.15.0",
+    "eslint-config-alloy": "^1.4.2",
+    "eslint-plugin-typescript": "^0.14.0",
+    "mysql": "^2.16.0",
+    "typescript": "^3.3.3333",
+    "typescript-eslint-parser": "^22.0.0"
   }
 }
