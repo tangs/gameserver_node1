@@ -1,8 +1,8 @@
-import { DbConfig } from "./DbConfig";
-import { Handler } from "../utils/Handler";
-import { StringHelper } from "../utils/StringHelper";
+import { DbConfig } from './DbConfig';
+import { Handler } from '../utils/Handler';
+import { StringHelper } from '../utils/StringHelper';
 
-const mysql = require("mysql");
+const mysql = require('mysql');
 
 export class DbHelper {
     private static instance: DbHelper;
@@ -28,27 +28,27 @@ export class DbHelper {
         });
     }
 
-    public query(sql: string , handler: Handler): void {
-        this.pool.getConnection(function(err, conn){  
-            if(err) {  
+    public query(sql: string, handler: Handler): void {
+        this.pool.getConnection(function(err, conn) {
+            if (err) {
                 if (handler) {
-                    handler.runWith(err);  
+                    handler.runWith(err);
                 }
-            } else {  
-                conn.query(sql,function(qerr, vals, fields){  
-                    //释放连接  
-                    conn.release();  
-                    //事件驱动回调  
+            } else {
+                conn.query(sql, function(qerr, vals, fields) {
+                    // 释放连接
+                    conn.release();
+                    // 事件驱动回调
                     if (handler) {
-                        handler.runWith([qerr,vals,fields]);  
+                        handler.runWith([qerr, vals, fields]);
                     }
-                });  
-            }  
-        });  
+                });
+            }
+        });
     }
 
     public isUserExist(acc: string, handler: Handler): void {
-        if (acc == null || acc.length == 0) {
+        if (acc == null || acc.length === 0) {
             if (handler) {
                 handler.runWith(null);
             }
@@ -60,7 +60,7 @@ export class DbHelper {
             if (err) {
                 throw err;
             }
-            if (rows.length == 0) {
+            if (rows.length === 0) {
                 if (handler) {
                     handler.runWith(false);
                 }
@@ -69,11 +69,11 @@ export class DbHelper {
             if (handler) {
                 handler.runWith(true);
             }
-        }));  
+        }));
     }
 
     public getUserInfo(acc: string, handler: Handler): void {
-        if (acc == null || acc.length == 0) {
+        if (acc == null || acc.length === 0) {
             if (handler) {
                 handler.runWith(null);
             }
@@ -89,7 +89,7 @@ export class DbHelper {
                 throw err;
             }
 
-            if (rows.length == 0) {
+            if (rows.length === 0) {
                 if (handler) {
                     handler.runWith(null);
                 }
@@ -113,7 +113,7 @@ export class DbHelper {
                 throw err;
             }
 
-            if(rows.length == 0){
+            if (rows.length === 0) {
                 if (handler) {
                     handler.runWith(null);
                 }
@@ -124,7 +124,7 @@ export class DbHelper {
         }));
     }
 
-    public updateUserInfo(info: any, handler: Handler) : void {
+    public updateUserInfo(info: any, handler: Handler): void {
         let keys = Object.keys(info);
         const userid = info ? info.userid : null;
         if (userid == null || keys.length <= 1) {
@@ -133,10 +133,10 @@ export class DbHelper {
             }
             return;
         }
-        let paras = "";
+        let paras = '';
         for (let i = 0; i < keys.length; ++i) {
             let key = keys[i];
-            if (key == "userid") {
+            if (key === 'userid') {
                 continue;
             }
             paras += StringHelper.format('{0}={1},', key, info[key]);
@@ -159,15 +159,14 @@ export class DbHelper {
 
     public createUser(info: any, handler: Handler): void {
         const acc = info ? info.account : null;
-        if (acc == null || acc.length == 0) {
+        if (acc == null || acc.length === 0) {
             if (handler) {
                 handler.runWith(false);
             }
             return;
         }
         let sql = 'INSERT INTO t_users(account, deviceid, name, sex, avatar, lv, coin) VALUES("{0}","{1}","{2}",{3},"{4}",{5},{6})';
-        sql = StringHelper.format(sql, acc, info.deviceid, 
-                info.name, info.sex, info.avatar, info.lv, info.coin);
+        sql = StringHelper.format(sql, acc, info.deviceid, info.name, info.sex, info.avatar, info.lv, info.coin);
         console.log(sql);
         this.query(sql, new Handler(this, (err, rows, fields) => {
             if (err) {
@@ -180,10 +179,10 @@ export class DbHelper {
     }
 
     public sendMail(info: any, handler: Handler): void {
-        if (info == null || info.sId == null|| info.addresseeId == null
+        if (info == null || info.sId == null || info.addresseeId == null
             || info.sender == null || info.title == null || info.content == null) {
             if (handler) {
-                handler.runWith([false, "信息不完整."]);
+                handler.runWith([false, '信息不完整.']);
             }
             return;
         }
@@ -211,7 +210,7 @@ export class DbHelper {
                 throw err;
             }
 
-            if(rows.length == 0){
+            if (rows.length === 0) {
                 if (handler) {
                     handler.runWith(null);
                 }
