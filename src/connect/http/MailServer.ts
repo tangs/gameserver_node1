@@ -12,9 +12,9 @@ class MailServer {
         // app.listen(Config.queryServer.port, function(req, res) {
         app.post('/mail', function(req, res, next) {
         // http.createServer(function(req, res) {
-            if (req.method == "POST") {
-                let post = '';     
-                req.on('data', function(chunk) {    
+            if (req.method === 'POST') {
+                let post = '';
+                req.on('data', function(chunk) {
                     post += chunk;
                 });
                 req.on('end', function() {
@@ -25,25 +25,25 @@ class MailServer {
                     }
                     dbm.sendMail(json, new Handler(this, (ret: boolean, error) => {
                         res.writeHead(200, {
-                            'Content-Type': "application/json;charset=utf-8"
+                            'Content-Type': 'application/json;charset=utf-8'
                         });
                         if (ret) {
-                            res.end("发送成功.");
+                            res.end('发送成功.');
                         } else {
-                            res.end("发送失败:" + error);
+                            res.end('发送失败:' + error);
                         }
                     }));
-                    console.log("recv:" + post);
+                    console.log('recv:' + post);
                 });
             } else {
                 res.writeHead(200, {
-                    'Content-Type': "application/json;charset=utf-8"
+                    'Content-Type': 'application/json;charset=utf-8'
                 });
                 res.end();
             }
         });
         app.listen(22222);
-        console.log("start auth server at port:" + 22222);
+        console.log('start auth server at port:' + 22222);
     }
 }
 new MailServer().start();
