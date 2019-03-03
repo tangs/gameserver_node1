@@ -1,10 +1,10 @@
-import { MsgDispatcher } from "../msg/MsgDispatcher";
-import { Handler } from "../utils/Handler";
-import { csprotos } from "../protos/csProtoDecoder";
-import { CSProto } from "../protos/TinyGameCSProto.xml";
-import { MyMsgBuilder } from "../msg/MyMsgBuilder";
-import { DbHelper } from "../db/DbHelper";
-import { UserManager } from "../user/UserManager";
+import { MsgDispatcher } from '../msg/MsgDispatcher';
+import { Handler } from '../utils/Handler';
+import { csprotos } from '../protos/csProtoDecoder';
+import { CSProto } from '../protos/TinyGameCSProto.xml';
+import { MyMsgBuilder } from '../msg/MyMsgBuilder';
+import { DbHelper } from '../db/DbHelper';
+import { UserManager } from '../user/UserManager';
 
 export class MailServer {
     private static instance: MailServer = null;
@@ -25,7 +25,7 @@ export class MailServer {
         const mmb = MyMsgBuilder.getInstance();
         const um = UserManager.getInstance();
         const dm = DbHelper.getInstance();
-        md.regeisterMsg("CMD_GET_MAILLIST", new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {            
+        md.regeisterMsg('CMD_GET_MAILLIST', new Handler(this, (msg1: csprotos.message, acc: string, ws: any) => {
             const info = um.getUserInfo(acc);
             if (info) {
                 dm.getMailsByDid(info.userid, new Handler(this, (rows) => {
