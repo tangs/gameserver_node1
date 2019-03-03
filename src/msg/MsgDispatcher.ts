@@ -11,9 +11,9 @@ class Info {
     }
 
     public equals(info: Info): boolean {
-        return info.msgName == this.msgName 
-                && info.handler.caller == this.handler.caller
-                && info.handler.method == this.handler.method;
+        return info.msgName === this.msgName
+                && info.handler.caller === this.handler.caller
+                && info.handler.method === this.handler.method;
     }
 }
 
@@ -35,7 +35,7 @@ export class MsgDispatcher {
         const len = infos.length;
         for (let i = 0; i < len; ++i) {
             const info = infos[i];
-            if (info.msgName == name) {
+            if (info.msgName === name) {
                 info.handler.runWith([msg, userKey, ws]);
             }
         }
@@ -64,7 +64,7 @@ export class MsgDispatcher {
         let len = infos.length;
         for (let i = 0; i < len; ++i) {
             const info = infos[i];
-            if (info.handler.caller == caller) {
+            if (info.handler.caller === caller) {
                 infos.splice(i, 1);
                 --len;
                 --i;
