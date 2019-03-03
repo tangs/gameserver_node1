@@ -1,6 +1,6 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from 'events';
 
-export class AppEventEmitter extends EventEmitter{
+export class AppEventEmitter extends EventEmitter {
     private static instance: AppEventEmitter = null;
 
     public static getInstance(): AppEventEmitter {
